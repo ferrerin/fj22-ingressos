@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import javax.validation.Valid;
 
+import br.com.caelum.ingresso.model.Carrinho;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +38,10 @@ public class SessaoController {
 
 	@Autowired
 	private OmdbClient omdbClient;
+
+	@Autowired
+	private Carrinho carrinho;
+
 
 	@GetMapping("/admin/sessao")
 	public ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm form) {
@@ -73,9 +78,8 @@ public class SessaoController {
 		modelAndView.addObject("imagemCapa", capa.orElse(new ImagemCapa()));
 		modelAndView.addObject("sessao", sessao);
 		modelAndView.addObject("tiposDeIngressos", TipoDeDesconto.values());
-		
+		modelAndView.addObject("carrinho", carrinho);
 		return modelAndView;
 	}
-
 	
 }
