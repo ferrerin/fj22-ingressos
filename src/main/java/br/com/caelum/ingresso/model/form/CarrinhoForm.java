@@ -5,7 +5,7 @@ import br.com.caelum.ingresso.dao.SessaoDao;
 import br.com.caelum.ingresso.model.Ingresso;
 import br.com.caelum.ingresso.model.Lugar;
 import br.com.caelum.ingresso.model.Sessao;
-import br.com.caelum.ingresso.model.descontos.TipoDeDesconto;
+import br.com.caelum.ingresso.model.descontos.TipoDeIngresso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +19,8 @@ public class CarrinhoForm {
         return ingressos.stream().map(ingresso -> {
             Sessao sessao = sessaoDao.findOne(ingresso.getSessao().getId());
             Lugar lugar = lugarDao.findOne(ingresso.getLugar().getId());
-            TipoDeDesconto tipoDeDesconto = ingresso.getTipoDeDesconto();
-            return new Ingresso(sessao, tipoDeDesconto, lugar);
+            TipoDeIngresso tipoDeIngresso = ingresso.getTipoDeIngresso();
+            return new Ingresso(sessao, tipoDeIngresso, lugar);
         }).collect(Collectors.toList());
     }
 

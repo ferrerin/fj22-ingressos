@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import br.com.caelum.ingresso.model.descontos.TipoDeDesconto;
+import br.com.caelum.ingresso.model.descontos.TipoDeIngresso;
 
 @Entity
 public class Ingresso {
@@ -24,7 +24,7 @@ public class Ingresso {
 	private BigDecimal preco;
 	
 	@Enumerated(EnumType.STRING)
-	private TipoDeDesconto tipoDeDesconto;
+	private TipoDeIngresso tipoDeIngresso;
 
 	@ManyToOne
 	private Lugar lugar;
@@ -35,20 +35,20 @@ public class Ingresso {
 	public Ingresso() {
 	}
 
-	public Ingresso(Sessao sessao, TipoDeDesconto tipoDeDesconto, Lugar lugar) {
+	public Ingresso(Sessao sessao, TipoDeIngresso tipoDeIngresso, Lugar lugar) {
 		super();
 		this.sessao = sessao;
-		this.tipoDeDesconto = tipoDeDesconto;
-		this.preco = tipoDeDesconto.aplicaDesconto(sessao.getPreco());
+		this.tipoDeIngresso = tipoDeIngresso;
+		this.preco = tipoDeIngresso.aplicaDesconto(sessao.getPreco());
 		this.lugar = lugar;
 	}
 
-	public TipoDeDesconto getTipoDeDesconto() {
-		return tipoDeDesconto;
+	public TipoDeIngresso getTipoDeIngresso() {
+		return tipoDeIngresso;
 	}
 
-	public void setTipoDeDesconto(TipoDeDesconto tipoDeDesconto) {
-		this.tipoDeDesconto = tipoDeDesconto;
+	public void setTipoDeIngresso(TipoDeIngresso tipoDeIngresso) {
+		this.tipoDeIngresso = tipoDeIngresso;
 	}
 
 	public Lugar getLugar() {

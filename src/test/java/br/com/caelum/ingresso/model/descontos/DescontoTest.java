@@ -22,7 +22,7 @@ public class DescontoTest {
 		Filme filme = new Filme("Uau", Duration.ofMinutes(120), "Drama", BigDecimal.TEN);
 		Sessao sessao = new Sessao(LocalTime.parse("10:00:00"), sala, filme);
 		Lugar lugar = new Lugar("A", 1);
-		Ingresso ingresso = new Ingresso(sessao, TipoDeDesconto.INTEIRA, lugar);
+		Ingresso ingresso = new Ingresso(sessao, TipoDeIngresso.INTEIRA, lugar);
 
 		BigDecimal precoEsperado = new BigDecimal("20.00");
 

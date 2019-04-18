@@ -7,7 +7,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import br.com.caelum.ingresso.model.descontos.TipoDeDesconto;
+import br.com.caelum.ingresso.model.descontos.TipoDeIngresso;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -41,7 +41,7 @@ public class SessaoTest {
 
 		Sessao sessao = new Sessao(LocalTime.now(), sala, filme);
 
-		Ingresso ingresso = new Ingresso(sessao, TipoDeDesconto.BANCO, a1);
+		Ingresso ingresso = new Ingresso(sessao, TipoDeIngresso.BANCO, a1);
 
 		Set<Ingresso> ingressos = Stream.of(ingresso).collect(Collectors.toSet());
 

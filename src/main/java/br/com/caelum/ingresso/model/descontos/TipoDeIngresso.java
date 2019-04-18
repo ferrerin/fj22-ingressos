@@ -2,7 +2,7 @@ package br.com.caelum.ingresso.model.descontos;
 
 import java.math.BigDecimal;
 
-public enum TipoDeDesconto {
+public enum TipoDeIngresso {
 	
 	INTEIRA(new SemDesconto()),
 	BANCO(new DescontoParaBanco()),
@@ -10,7 +10,7 @@ public enum TipoDeDesconto {
 	
 	private Desconto desconto;
 	
-	TipoDeDesconto (Desconto desconto) {
+	TipoDeIngresso(Desconto desconto) {
 		this.desconto = desconto;
 	}
 	
