@@ -1,10 +1,14 @@
 package br.com.caelum.ingresso.controller;
 
-import java.util.Optional;
-
-import javax.validation.Valid;
-
+import br.com.caelum.ingresso.dao.FilmeDao;
+import br.com.caelum.ingresso.dao.SalaDao;
+import br.com.caelum.ingresso.dao.SessaoDao;
 import br.com.caelum.ingresso.model.Carrinho;
+import br.com.caelum.ingresso.model.ImagemCapa;
+import br.com.caelum.ingresso.model.Sessao;
+import br.com.caelum.ingresso.model.descontos.TipoDeIngresso;
+import br.com.caelum.ingresso.model.form.SessaoForm;
+import br.com.caelum.ingresso.rest.OmdbClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,71 +19,65 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import br.com.caelum.ingresso.dao.FilmeDao;
-import br.com.caelum.ingresso.dao.SalaDao;
-import br.com.caelum.ingresso.dao.SessaoDao;
-import br.com.caelum.ingresso.model.ImagemCapa;
-import br.com.caelum.ingresso.model.Sessao;
-import br.com.caelum.ingresso.model.descontos.TipoDeIngresso;
-import br.com.caelum.ingresso.model.form.SessaoForm;
-import br.com.caelum.ingresso.rest.OmdbClient;
+import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 public class SessaoController {
 
-	@Autowired
-	private SalaDao salaDao;
+    @Autowired
+    private SalaDao salaDao;
 
-	@Autowired
-	private FilmeDao filmeDao;
+    @Autowired
+    private FilmeDao filmeDao;
 
-	@Autowired
-	private SessaoDao sessaoDao;
+    @Autowired
+    private SessaoDao sessaoDao;
 
-	@Autowired
-	private OmdbClient omdbClient;
+    @Autowired
+    private OmdbClient omdbClient;
 
-	@Autowired
-	private Carrinho carrinho;
+    @Autowired
+    private Carrinho carrinho;
 
 
-	@GetMapping("/admin/sessao")
-	public ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm form) {
+    @GetMapping("/admin/sessao")
+    public ModelAndView form(@RequestParam("salaId") Integer salaId, SessaoForm form) {
 
-		form.setSalaId(salaId);
+        form.setSalaId(salaId);
 
-		ModelAndView modelAndView = new ModelAndView("sessao/sessao");
+        ModelAndView modelAndView = new ModelAndView("sessao/sessao");
 
-		modelAndView.addObject("salaId", salaDao.findOne(salaId));
-		modelAndView.addObject("filmes", filmeDao.findAll());
-		modelAndView.addObject("form", form);
+        modelAndView.addObject("salaId", salaDao.findOne(salaId));
+        modelAndView.addObject("filmes", filmeDao.findAll());
+        modelAndView.addObject("form", form);
 
-		return modelAndView;
+        return modelAndView;
 
-	}
+    }
 
-	@PostMapping("/admin/sessao")
-	@Transactional
-	public ModelAndView save(@Valid SessaoForm form, BindingResult result) {
-		if (result.hasErrors())
-			return form(form.getSalaId(), form);
-		Sessao sessao = form.toSessao(salaDao, filmeDao);
-		sessaoDao.save(sessao);
-		return new ModelAndView("redirect:/admin/sala/" + form.getSalaId() + "/sessoes");
-	}
+    @PostMapping("/admin/sessao")
+    @Transactional
+    public ModelAndView save(@Valid SessaoForm form, BindingResult result) {
+        if (result.hasErrors())
+            return form(form.getSalaId(), form);
+        Sessao sessao = form.toSessao(salaDao, filmeDao);
+        sessaoDao.save(sessao);
+        return new ModelAndView("redirect:/admin/sala/" + form.getSalaId() + "/sessoes");
+    }
 
-	@GetMapping("/sessao/{id}/lugares")
-	public ModelAndView mostraLugares(@PathVariable("id") Integer id) {
-		ModelAndView modelAndView = new ModelAndView("sessao/lugares");
+    @GetMapping("/sessao/{id}/lugares")
+    public ModelAndView mostraLugares(@PathVariable("id") Integer id) {
+        ModelAndView modelAndView = new ModelAndView("sessao/lugares");
 
-		Sessao sessao = sessaoDao.findOne(id);
-		Optional<ImagemCapa> capa = omdbClient.request(sessao.getFilme().getNome(), ImagemCapa.class);
-		
-		modelAndView.addObject("imagemCapa", capa.orElse(new ImagemCapa()));
-		modelAndView.addObject("sessao", sessao);
-		modelAndView.addObject("tiposDeIngressos", TipoDeIngresso.values());
-		modelAndView.addObject("carrinho", carrinho);
-		return modelAndView;
-	}
-	
+        Sessao sessao = sessaoDao.findOne(id);
+        Optional<ImagemCapa> capa = omdbClient.request(sessao.getFilme().getNome(), ImagemCapa.class);
+
+        modelAndView.addObject("imagemCapa", capa.orElse(new ImagemCapa()));
+        modelAndView.addObject("sessao", sessao);
+        modelAndView.addObject("tiposDeIngressos", TipoDeIngresso.values());
+        modelAndView.addObject("carrinho", carrinho);
+        return modelAndView;
+    }
+
 }
