@@ -43,6 +43,7 @@ public class Ingresso {
 		this.lugar = lugar;
 	}
 
+
 	public TipoDeIngresso getTipoDeIngresso() {
 		return tipoDeIngresso;
 	}
